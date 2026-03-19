@@ -264,7 +264,8 @@ cd git-workflow-lab
 **2.2 — Install the shared hook**
 ```bash
 cp hooks/pre-commit .git/hooks/pre-commit
-chmod +x .git/hooks/pre-commit
+cp hooks/commit-msg .git/hooks/commit-msg
+chmod +x .git/hooks/pre-commit .git/hooks/commit-msg
 ```
 
 **2.3 — Write the hook (Vish opens a PR to add this to `hooks/pre-commit`)**
