@@ -1,0 +1,2 @@
+shared config v1
+config key A = value1

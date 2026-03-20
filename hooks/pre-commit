@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -e
+
+# ── 1. Trailing whitespace check ─────────────────────────────────────────────
+STAGED=$(git diff --cached --name-only --diff-filter=ACM)
+
+for FILE in $STAGED; do
+  if grep -Pq " +$" "$FILE" 2>/dev/null; then
+    echo "❌ COMMIT BLOCKED — Trailing whitespace in: $FILE"
+    echo "   Fix: sed -i 's/[[:space:]]*$//' $FILE"
+    exit 1
+  fi
+done
+
+# ── 2. File size check (max 1MB) ──────────────────────────────────────────────
+for FILE in $STAGED; do
+  SIZE=$(wc -c < "$FILE")
+  if [ "$SIZE" -gt 1048576 ]; then
+    echo "❌ COMMIT BLOCKED — File too large (>1MB): $FILE"
+    exit 1
+  fi
+done
+
+echo "✅ Pre-commit checks passed."
+exit 0
